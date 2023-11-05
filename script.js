@@ -1,12 +1,19 @@
 // variable set to grab elements or store values needed
-var quizBody = document.querySelector('#quiz');
+var questionEl = document.querySelector('#ques');
 var startButton  = document.querySelector('#start-button');
 var timerEl = document.querySelector('#timer-text');
 var answerCheckEl = document.querySelector('#answerCheck');
+var user = document.querySelector('#User');
+var form = document.querySelector('#user-form');
+var results = document.querySelector('#results');
+var optionsEl = document.querySelector('#options');
+
 var timerCount;
 var timer;
 var currentQuestion = 0;
 var currentAnswer;
+
+
 var scoresArray = [];
 
 // questions array
@@ -55,15 +62,19 @@ function  startTimer(){
 function startQuiz() {
 startTimer();
 loadQues();
+
+//removes start buttons and other elements so that only the quiz shows on start up
 startButton.style.display = 'none';
 startButton.disabled = true;
+form.remove();
+user.remove();
+
+//sets the value in the initals form to local storage which will be pulled from later and stored to the scoresArray
+localStorage.setItem('userInput', user.value);
 }
 
 // function to display and index the questions
 function loadQues(){
-    var questionEl = document.querySelector('#ques');
-    var optionsEl = document.querySelector('#options');
-
     questionEl.textContent = questions[currentQuestion].question;
     optionsEl.innerHTML = '';
     
@@ -94,12 +105,12 @@ function loadQues(){
             }
         
         })
- }
+    }
 }
 
 //fail function for when timer runs out
 function failQuiz() {
-quizBody.textContent = 'Failed, timer is up';
+questionEl.textContent = 'Failed, timer is up';
 startButton.disabled = false;
 }
 
@@ -109,16 +120,62 @@ function nextQuestion() {
         currentQuestion++;
         loadQues();
     } else {
-        document.querySelector('#ques').remove();
-        document.querySelector('#options').remove();
+        questionEl.style.display = 'none';
+        optionsEl.style.display = 'none';
         loadScore();
     }
 }
 
+//pulls user initials from local storage and pushes the input and score as an object to the scores array
 function loadScore() {
+answerCheckEl.style.display = 'none';
+clearInterval(timer);
+timerEl.style.display = 'none';
+
+var UserValue = localStorage.getItem('userInput');
+scoresArray.push({"User" : UserValue, "Score": timerCount});
+
+var scoresList = document.createElement('ul');
+var scoreItems = document.createElement('li');
+
+scoresList.setAttribute('class', 'score-list');
+scoreItems.setAttribute('class', 'score-items');
+
+for (var x = 0; x < scoresArray.length; x++){
+
+
+scoreItems.textContent = scoresArray[x].User + ' ' + scoresArray[x].Score;
+
+scoresList.appendChild(scoreItems);
+results.appendChild(scoresList);
+}
+
+startButton.style.display = 'block';
+startButton.disabled= false;
+startButton.addEventListener("click", restartQuiz);
+
+
+console.log(scoresArray);
+}
+
+function restartQuiz() {
+var listRemoverEl = document.querySelector('.score-list');
+var listItemRemoverEl = document.querySelector('.score-item');
+listRemoverEl.remove();
+listItemRemoverEl.remove();
+
+answerCheckEl.textContent = '';
+answerCheckEl.style.display = 'block';
+timerEl.style.display = 'block';
+questionEl.style.display = 'block';
+optionsEl.style.display = 'block ';
+
+currentQuestion = 0;
+timerCount = 100;
+
+startQuiz();
+startButton.style.display = 'none';
 
 }
 
 startButton.addEventListener("click", startQuiz);
-console.log(currentQuestion);
-console.log(currentAnswer);
