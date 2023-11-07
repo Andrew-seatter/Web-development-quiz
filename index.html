@@ -5,14 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="Description" content="Web-development-quiz" />
+    <link rel='stylesheet' href="styles.css" />
+
     <header id="timer-text"></header>
+    <h1 id="headerEl">Web development quiz</h1>
     <body>
-        <div id="ques"></div>
-        <div id="options"></div>
-        <button id='start-button'>Start</button>
-        <button id="submit"> Get Results</button>
-        <div id="answerCheck"></div>
-        <div id="results"></div>
+      <div class="container">
+        <form id="user-form">
+          <label for="User">Enter your first and last initial to start the quiz : </label>
+          <input type="text" id="User" name="User">
+         </form>
+         <button id='start-button'>Start</button>
+      </div>
+
+      <button id="restart">Restart</button>
+    
+
+      <div id="ques"></div>
+      <div id="options"></div>
+      <div id="answerCheck"></div>
+        
+        <ul id="results">Scores</ul>
     </body>
 
     <script src ='script.js'></script>
+
+    </html>

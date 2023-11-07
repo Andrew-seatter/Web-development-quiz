@@ -1,12 +1,21 @@
 // variable set to grab elements or store values needed
-var quizBody = document.querySelector('#quiz');
+var questionEl = document.querySelector('#ques');
 var startButton  = document.querySelector('#start-button');
 var timerEl = document.querySelector('#timer-text');
 var answerCheckEl = document.querySelector('#answerCheck');
+var user = document.querySelector('#User');
+var form = document.querySelector('#user-form');
+var results = document.querySelector('#results');
+var optionsEl = document.querySelector('#options');
+var restartButton = document.querySelector('#restart');
+var headerEl = document.querySelector('#headerEl');
+
 var timerCount;
 var timer;
 var currentQuestion = 0;
 var currentAnswer;
+
+
 var scoresArray = [];
 
 // questions array
@@ -22,7 +31,7 @@ var questions = [
     answer: 'Angle brackets </>'
 },
 {
-    question: 'A CSS style sheet can be applied to multiple HTML files',
+    question: 'You can link more than one stylesheet',
     options: ['True', 'False'],
     answer: 'True'
 },
@@ -55,15 +64,20 @@ function  startTimer(){
 function startQuiz() {
 startTimer();
 loadQues();
+
+//removes start buttons and other elements so that only the quiz shows on start up
 startButton.style.display = 'none';
 startButton.disabled = true;
+form.remove();
+user.remove();
+headerEl.remove();
+
+//sets the value in the initals form to local storage which will be pulled from later and stored to the scoresArray
+localStorage.setItem('userInput', user.value);
 }
 
 // function to display and index the questions
 function loadQues(){
-    var questionEl = document.querySelector('#ques');
-    var optionsEl = document.querySelector('#options');
-
     questionEl.textContent = questions[currentQuestion].question;
     optionsEl.innerHTML = '';
     
@@ -94,12 +108,12 @@ function loadQues(){
             }
         
         })
- }
+    }
 }
 
 //fail function for when timer runs out
 function failQuiz() {
-quizBody.textContent = 'Failed, timer is up';
+questionEl.textContent = 'Failed, timer is up';
 startButton.disabled = false;
 }
 
@@ -109,16 +123,68 @@ function nextQuestion() {
         currentQuestion++;
         loadQues();
     } else {
-        document.querySelector('#ques').remove();
-        document.querySelector('#options').remove();
+        questionEl.style.display = 'none';
+        optionsEl.style.display = 'none';
         loadScore();
     }
 }
 
+//pulls user initials from local storage and pushes the input and score as an object to the scores array
 function loadScore() {
+
+//reveals start button and hides the answercheckEl
+restartButton.style.display = 'block';
+answerCheckEl.style.display = 'none';
+results.style.display = 'flex';
+
+//clears and hides timer
+clearInterval(timer);
+timerEl.style.display = 'none';
+
+//grabs user input at beginning of quiz
+var UserValue = localStorage.getItem('userInput');
+scoresArray.push({"User" : UserValue, "Score": timerCount});
+
+//creates a list to store user and score
+var scoreItems = document.createElement('li');
+
+//gives the scores list items an id to grab
+scoreItems.setAttribute('id', 'score-items');
+
+//loopps through scores array and adds one element at a time to list items
+for (var x = 0; x < scoresArray.length; x++){
+scoreItems.textContent = scoresArray[x].User + ' ' + scoresArray[x].Score;
+results.appendChild(scoreItems);
+}
+
+results.style.display = 'flex';
+
+console.log(scoresArray);
+}
+
+
+function restartQuiz() {
+//hides results list and pulls question, answercheck and timer back on to page;
+answerCheckEl.style.display = 'flex';
+results.style.display = 'none';
+answerCheckEl.textContent = '';
+timerEl.style.display = 'flex';
+questionEl.style.display = 'flex';
+optionsEl.style.display = 'flex';
+
+//resets current question and timer
+currentQuestion = 0;
+timerCount = 100;
+
+//calls inital start quiz function
+startQuiz();
+
+//hides both start buttons
+startButton.style.display = 'none';
+restartButton.style.display = 'none';
 
 }
 
 startButton.addEventListener("click", startQuiz);
-console.log(currentQuestion);
-console.log(currentAnswer);
+restartButton.addEventListener('click', restartQuiz);
+
