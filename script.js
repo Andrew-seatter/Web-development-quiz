@@ -8,6 +8,7 @@ var form = document.querySelector('#user-form');
 var results = document.querySelector('#results');
 var optionsEl = document.querySelector('#options');
 var restartButton = document.querySelector('#restart');
+var headerEl = document.querySelector('#headerEl');
 
 var timerCount;
 var timer;
@@ -30,7 +31,7 @@ var questions = [
     answer: 'Angle brackets </>'
 },
 {
-    question: 'A CSS style sheet can be applied to multiple HTML files',
+    question: 'You can link more than one stylesheet',
     options: ['True', 'False'],
     answer: 'True'
 },
@@ -69,6 +70,7 @@ startButton.style.display = 'none';
 startButton.disabled = true;
 form.remove();
 user.remove();
+headerEl.remove();
 
 //sets the value in the initals form to local storage which will be pulled from later and stored to the scoresArray
 localStorage.setItem('userInput', user.value);
@@ -133,6 +135,7 @@ function loadScore() {
 //reveals start button and hides the answercheckEl
 restartButton.style.display = 'block';
 answerCheckEl.style.display = 'none';
+results.style.display = 'flex';
 
 //clears and hides timer
 clearInterval(timer);
@@ -154,7 +157,7 @@ scoreItems.textContent = scoresArray[x].User + ' ' + scoresArray[x].Score;
 results.appendChild(scoreItems);
 }
 
-results.style.display = 'block';
+results.style.display = 'flex';
 
 console.log(scoresArray);
 }
@@ -162,12 +165,12 @@ console.log(scoresArray);
 
 function restartQuiz() {
 //hides results list and pulls question, answercheck and timer back on to page;
-answerCheckEl.style.display = 'block';
+answerCheckEl.style.display = 'flex';
 results.style.display = 'none';
 answerCheckEl.textContent = '';
-timerEl.style.display = 'block';
-questionEl.style.display = 'block';
-optionsEl.style.display = 'block ';
+timerEl.style.display = 'flex';
+questionEl.style.display = 'flex';
+optionsEl.style.display = 'flex';
 
 //resets current question and timer
 currentQuestion = 0;
