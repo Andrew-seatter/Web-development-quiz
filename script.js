@@ -7,6 +7,7 @@ var user = document.querySelector('#User');
 var form = document.querySelector('#user-form');
 var results = document.querySelector('#results');
 var optionsEl = document.querySelector('#options');
+var restartButton = document.querySelector('#restart');
 
 var timerCount;
 var timer;
@@ -128,54 +129,59 @@ function nextQuestion() {
 
 //pulls user initials from local storage and pushes the input and score as an object to the scores array
 function loadScore() {
+
+//reveals start button and hides the answercheckEl
+restartButton.style.display = 'block';
 answerCheckEl.style.display = 'none';
+
+//clears and hides timer
 clearInterval(timer);
 timerEl.style.display = 'none';
 
+//grabs user input at beginning of quiz
 var UserValue = localStorage.getItem('userInput');
 scoresArray.push({"User" : UserValue, "Score": timerCount});
 
-var scoresList = document.createElement('ul');
+//creates a list to store user and score
 var scoreItems = document.createElement('li');
 
-scoresList.setAttribute('class', 'score-list');
-scoreItems.setAttribute('class', 'score-items');
+//gives the scores list items an id to grab
+scoreItems.setAttribute('id', 'score-items');
 
+//loopps through scores array and adds one element at a time to list items
 for (var x = 0; x < scoresArray.length; x++){
-
-
 scoreItems.textContent = scoresArray[x].User + ' ' + scoresArray[x].Score;
-
-scoresList.appendChild(scoreItems);
-results.appendChild(scoresList);
+results.appendChild(scoreItems);
 }
 
-startButton.style.display = 'block';
-startButton.disabled= false;
-startButton.addEventListener("click", restartQuiz);
-
+results.style.display = 'block';
 
 console.log(scoresArray);
 }
 
-function restartQuiz() {
-var listRemoverEl = document.querySelector('.score-list');
-var listItemRemoverEl = document.querySelector('.score-item');
-listRemoverEl.remove();
-listItemRemoverEl.remove();
 
-answerCheckEl.textContent = '';
+function restartQuiz() {
+//hides results list and pulls question, answercheck and timer back on to page;
 answerCheckEl.style.display = 'block';
+results.style.display = 'none';
+answerCheckEl.textContent = '';
 timerEl.style.display = 'block';
 questionEl.style.display = 'block';
 optionsEl.style.display = 'block ';
 
+//resets current question and timer
 currentQuestion = 0;
 timerCount = 100;
 
+//calls inital start quiz function
 startQuiz();
+
+//hides both start buttons
 startButton.style.display = 'none';
+restartButton.style.display = 'none';
 
 }
 
 startButton.addEventListener("click", startQuiz);
+restartButton.addEventListener('click', restartQuiz);
+

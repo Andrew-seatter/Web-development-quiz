@@ -1,0 +1,18 @@
+#restart {
+    display: none;
+}
+
+#start-button {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    margin: 10px;
+    
+}
+
+#user-form {
+    position: absolute;
+    top: 44%;
+    right: 40%;
+    margin: 10px;
+}
