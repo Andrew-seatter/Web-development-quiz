@@ -9,7 +9,7 @@ All the questions and answers of this quiz are interactive so as soon as you cho
 Upon finishing the quiz it will print out your most recent scores to you, being ordered from most recent attempt to latest attmept.
 
 ![website-screenshot](assets/screenshot.png)
-
+Link to deployed application: https://andrew-seatter.github.io/Web-development-quiz/
 ## License
 
 The MIT License (MIT)
